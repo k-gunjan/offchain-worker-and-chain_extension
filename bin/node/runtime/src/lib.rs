@@ -88,6 +88,13 @@ pub use pallet_sudo::Call as SudoCall;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 
+/// import Call from pallet offchain worker
+// pub use pallet_offchain_worker::Call as OffchainWorkerCall;
+
+// import chain extension for offchain worker pallet
+mod chain_extension;
+use chain_extension::DemoChainExtension;
+
 /// Implementations of some helper traits passed into runtime modules as associated types.
 pub mod impls;
 #[cfg(not(feature = "runtime-benchmarks"))]
@@ -101,6 +108,9 @@ use sp_runtime::generic::Era;
 
 /// Generated voter bag information.
 mod voter_bags;
+
+/// import the pallet offchain worker
+pub use pallet_offchain_worker;
 
 // Make the WASM binary available.
 #[cfg(feature = "std")]
@@ -225,6 +235,25 @@ impl frame_system::Config for Runtime {
 	type SS58Prefix = ConstU16<42>;
 	type OnSetCode = ();
 	type MaxConsumers = ConstU32<16>;
+}
+
+// parameters for offchain worker
+parameter_types! {
+	pub const GracePeriod: BlockNumber = 3;
+	pub const UnsignedInterval: BlockNumber = 3;
+	pub const UnsignedPriority: BlockNumber = 3;
+	pub const MaxPrices: u32 = 100;
+}
+
+/// Configure the pallet offchain worker in pallets/offchain-worker
+impl pallet_offchain_worker::Config for Runtime {
+	type AuthorityId = pallet_offchain_worker::crypto::TestAuthId;
+	type RuntimeEvent = RuntimeEvent;
+	// type Call = Call;
+	type GracePeriod = GracePeriod;
+	type UnsignedInterval = UnsignedInterval;
+	type UnsignedPriority = UnsignedPriority;
+	type MaxPrices = MaxPrices;
 }
 
 impl pallet_randomness_collective_flip::Config for Runtime {}
@@ -1174,7 +1203,7 @@ impl pallet_contracts::Config for Runtime {
 	type CallStack = [pallet_contracts::Frame<Self>; 31];
 	type WeightPrice = pallet_transaction_payment::Pallet<Self>;
 	type WeightInfo = pallet_contracts::weights::SubstrateWeight<Self>;
-	type ChainExtension = ();
+	type ChainExtension = DemoChainExtension; //(); //
 	type DeletionQueueDepth = DeletionQueueDepth;
 	type DeletionWeightLimit = DeletionWeightLimit;
 	type Schedule = Schedule;
@@ -1670,6 +1699,8 @@ construct_runtime!(
 		RankedPolls: pallet_referenda::<Instance2>,
 		RankedCollective: pallet_ranked_collective,
 		FastUnstake: pallet_fast_unstake,
+		//pallet offchain worker
+		OffchainWorker: pallet_offchain_worker,
 	}
 );
 

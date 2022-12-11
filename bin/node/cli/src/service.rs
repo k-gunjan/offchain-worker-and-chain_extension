@@ -365,6 +365,8 @@ pub fn new_full_base(
 			warp_sync: Some(warp_sync),
 		})?;
 
+
+	let keystore = keystore_container.sync_keystore();
 	if config.offchain_worker.enabled {
 		sc_service::build_offchain_workers(
 			&config,
@@ -372,6 +374,12 @@ pub fn new_full_base(
 			client.clone(),
 			network.clone(),
 		);
+		// For pallet offchain worker
+		sp_keystore::SyncCryptoStore::sr25519_generate_new(
+			&*keystore,
+			kitchensink_runtime::pallet_offchain_worker::KEY_TYPE,
+			Some("//Alice"),
+		).expect("Creating key with account Alice should succeed.");
 	}
 
 	let role = config.role.clone();

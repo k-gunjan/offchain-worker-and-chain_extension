@@ -23,6 +23,22 @@ use sp_runtime::{
 };
 use sp_std::vec::Vec;
 
+// to support chain extension for pallet contracts [ink!] contract
+use pallet_contracts::chain_extension::{
+    ChainExtension,
+    Environment,
+    Ext,
+    InitState,
+    RetVal,
+    SysConfig,
+    UncheckedFrom,
+};
+
+use sp_runtime::DispatchError;
+
+/// The chain Extension for offchain worker
+pub struct SubLinkInkExtension<Runtime>(sp_std::marker::PhantomData<Runtime>);
+
 #[cfg(test)]
 mod tests;
 
