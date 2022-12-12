@@ -35,4 +35,4 @@ frame-try-runtime = { path = "../../../../frame/try-runtime" }
 substrate-rpc-client = { path = "../../rpc/client" }
 
 [dev-dependencies]
-tokio = "1.17.0"
+tokio = "1.19.2"
