@@ -1,9 +1,22 @@
-# Substrate &middot; [![GitHub license](https://img.shields.io/badge/license-GPL3%2FApache2-blue)](#LICENSE) [![GitLab Status](https://gitlab.parity.io/parity/substrate/badges/master/pipeline.svg)](https://gitlab.parity.io/parity/substrate/pipelines) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](docs/CONTRIBUTING.adoc) [![Stack Exchange](https://img.shields.io/badge/Substrate-Community%20&%20Support-24CC85?logo=stackexchange)](https://substrate.stackexchange.com/)
+# Token price feed by Orcales for custome pallet OR Ink contracts 
+
 <p align="center">
   <img src="/docs/media/sub.gif">
 </p>
 
 Substrate is a next-generation framework for blockchain innovation 🚀.
+
+The custom pallet `Pallet-Offchain-worker` facilitates the submission of token prices by oracles through signed or unsigned transactions. This functionality is useful in decentralized exchanges (DEX) and other applications that require access to the average token price.  
+
+The process works as follows:  
+
+1. `Oracles submit token prices`: Multiple oracles can submit token prices through the Pallet Offchain-worker. These prices can be for various tokens in the system.  
+
+2. `Average calculation`: The Pallet Offchain-worker calculates the average of all the submitted prices. This ensures that the resulting price reflects a consensus among the oracles.  
+
+3. `Accessible price data`: The calculated average price is made accessible for consumption in various components of the system, such as the DEX logic or custom pallets. Smart contracts can also make use of this average price for their operations.  
+
+By implementing the Pallet Offchain-worker in your Substrate-based blockchain, we have enabled the integration of oracles and the retrieval of reliable and consensus-based token price data. This can be essential for the proper functioning of decentralized exchanges and other applications that rely on accurate pricing information.  
 
 ## Getting Started
 
